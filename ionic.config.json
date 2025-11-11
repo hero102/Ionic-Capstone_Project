@@ -1,0 +1,7 @@
+{
+  "name": "travelQuestApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
