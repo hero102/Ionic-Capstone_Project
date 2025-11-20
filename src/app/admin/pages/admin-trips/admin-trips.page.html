@@ -1,0 +1,150 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">Admin — Trips Management</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="page-container ion-padding">
+
+  <!-- 🔍 Search & Filter -->
+  <div class="sticky-toolbar search-container">
+    <ion-input
+      class="custom-search"
+      placeholder="Search trips, destinations, or users..."
+      (ionInput)="onSearchChange($event)"
+      clearInput
+    >
+      <ion-icon name="search-outline" slot="start"></ion-icon>
+    </ion-input>
+  </div>
+
+  <ion-segment
+    [value]="filterType()"
+    (ionChange)="onFilterChange($event.detail.value)"
+    class="ion-margin-bottom sticky-toolbar"
+  >
+    <ion-segment-button value="all">
+      <ion-label>All</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="pending">
+      <ion-label>Pending</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="approved">
+      <ion-label>Approved</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="featured">
+      <ion-label>Featured</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- 🌀 Loader -->
+  <div class="loader-container" *ngIf="loading()">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <p>Loading trips...</p>
+  </div>
+
+  <!-- ✅ Trips Grid -->
+  <ion-grid *ngIf="!loading() && filteredTrips().length > 0; else emptyState">
+    <ion-row>
+      <ion-col
+        size="12"
+        size-sm="6"
+        size-md="4"
+        size-lg="3"
+        *ngFor="let t of filteredTrips()"
+        class="fade-in"
+      >
+        <ion-card class="trip-card">
+          <div class="image-wrapper">
+            <img
+              [src]="t.imageUrls?.[0] || t.imageUrl || 'assets/images/default-trip.jpg'"
+              alt="Trip image"
+            />
+          </div>
+
+          <ion-card-header>
+            <ion-card-title>{{ t.title || 'Untitled Trip' }}</ion-card-title>
+            <ion-card-subtitle>
+              {{ t.destination?.name || 'Unknown Destination' }}
+            </ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            <p class="ion-text-wrap">{{ t.caption || 'No description.' }}</p>
+
+            <p class="ion-text-center ion-margin-top">
+              <ion-icon name="calendar-outline"></ion-icon>
+              {{ t.startDate || '—' }} → {{ t.endDate || '—' }}
+            </p>
+
+            <!-- ⭐ Status -->
+            <div class="status-container ion-margin-top">
+              <ion-badge
+                [color]="
+                  t.approved ? 'success' : (t.featured ? 'tertiary' : 'warning')
+                "
+              >
+                {{
+                  t.approved
+                    ? 'Approved ✅'
+                    : (t.featured ? 'Featured ✨' : 'Pending ⏳')
+                }}
+              </ion-badge>
+
+              <ion-badge color="medium" *ngIf="t.user?.name">
+                {{ t.user?.name }}
+              </ion-badge>
+            </div>
+          </ion-card-content>
+
+          <!-- 🧭 Action Buttons -->
+          <ion-row class="ion-justify-content-around ion-padding-bottom">
+            <ion-button
+              size="small"
+              color="success"
+              fill="outline"
+              (click)="confirmApprove(t)"
+            >
+              <ion-icon
+                [name]="t.approved ? 'close-circle-outline' : 'checkmark-circle-outline'"
+                slot="start"
+              ></ion-icon>
+              {{ t.approved ? 'Unapprove' : 'Approve' }}
+            </ion-button>
+
+            <ion-button
+              size="small"
+              color="warning"
+              fill="outline"
+              (click)="confirmFeature(t)"
+            >
+              <ion-icon
+                [name]="t.featured ? 'star-outline' : 'star'"
+                slot="start"
+              ></ion-icon>
+              {{ t.featured ? 'Unfeature' : 'Feature' }}
+            </ion-button>
+
+            <ion-button
+              size="small"
+              color="danger"
+              fill="outline"
+              (click)="confirmDelete(t)"
+            >
+              <ion-icon name="trash-outline" slot="start"></ion-icon>
+              Delete
+            </ion-button>
+          </ion-row>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- 🚫 Empty -->
+  <ng-template #emptyState>
+    <div class="ion-text-center ion-margin-top fade-in">
+      <ion-icon name="alert-circle-outline" size="large" color="medium"></ion-icon>
+      <p>No trips found in this category.</p>
+    </div>
+  </ng-template>
+</ion-content>

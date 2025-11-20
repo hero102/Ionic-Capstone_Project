@@ -1,0 +1,120 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">My Trips</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- ✅ Filter Segments -->
+  <ion-segment
+    [value]="segment()"
+    (ionChange)="onSegmentChange($event)"
+    class="ion-margin-bottom"
+  >
+    <ion-segment-button value="all">
+      <ion-label>All</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="drafts">
+      <ion-label>Drafts</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="published">
+      <ion-label>Published</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- 🌀 Loader -->
+  <ion-progress-bar *ngIf="loading()" type="indeterminate"></ion-progress-bar>
+
+  <!-- 🧭 Trips Grid -->
+  <ion-grid *ngIf="!loading() && filteredTrips().length > 0; else emptyState">
+    <ion-row>
+      <ion-col
+        size="12"
+        size-sm="6"
+        size-md="4"
+        size-lg="3"
+        *ngFor="let t of filteredTrips()"
+        class="trip-col"
+      >
+        <ion-card class="trip-card">
+          <div class="trip-image">
+            <ion-img
+              [src]="
+                (t.imageUrls?.length ? t.imageUrls[0] : t.imageUrl) ||
+                'assets/images/default-trip.jpg'
+              "
+              alt="Trip image"
+            ></ion-img>
+          </div>
+
+          <ion-card-header>
+            <ion-card-title>{{ t.title || 'Untitled Trip' }}</ion-card-title>
+            <ion-card-subtitle>{{ t.destination?.name || 'Unknown' }}</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            <p *ngIf="t.caption">{{ t.caption }}</p>
+
+            <p class="date">
+              <ion-icon name="calendar-outline"></ion-icon>
+              {{ t.startDate || '—' }} → {{ t.endDate || '—' }}
+            </p>
+
+            <!-- ⭐ Rating -->
+            <div class="rating-container" *ngIf="t.rating > 0">
+              <ion-icon
+                *ngFor="let s of [1,2,3,4,5]"
+                [name]="s <= t.rating ? 'star' : 'star-outline'"
+                color="warning"
+              ></ion-icon>
+              <ion-note color="medium">({{ t.rating }}/5)</ion-note>
+            </div>
+
+            <!-- 🏷️ Status -->
+            <div class="status-container">
+              <ion-badge
+                [color]="t.draft ? 'medium' : (t.approved ? 'success' : 'warning')"
+              >
+                {{
+                  t.draft
+                    ? 'Draft'
+                    : t.approved
+                    ? 'Published'
+                    : 'Pending Approval'
+                }}
+              </ion-badge>
+
+              <ion-badge color="tertiary" *ngIf="t.featured">Featured</ion-badge>
+            </div>
+          </ion-card-content>
+
+          <!-- ✏️ Buttons -->
+          <ion-row class="ion-justify-content-around ion-padding-bottom">
+            <ion-button fill="clear" color="primary" (click)="editTrip(t)">
+              <ion-icon name="create-outline"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" color="danger" (click)="deleteTrip(t)">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-row>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- 🚫 Empty -->
+  <ng-template #emptyState>
+    <div class="ion-text-center ion-margin-top">
+      <ion-icon name="map-outline" size="large" color="medium"></ion-icon>
+      <p>No trips found in this category.</p>
+    </div>
+  </ng-template>
+
+  <!-- ➕ Add FAB -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="primary" (click)="openCreate()">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

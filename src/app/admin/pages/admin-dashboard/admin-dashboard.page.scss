@@ -1,0 +1,27 @@
+ion-segment {
+  background: var(--ion-color-primary-tint);
+  border-radius: 12px;
+  margin-top: 6px;
+  ion-segment-button {
+    color: var(--ion-color-dark);
+    font-weight: 500;
+    ion-icon {
+      font-size: 18px;
+      margin-right: 6px;
+    }
+    &.segment-button-checked {
+      background: var(--ion-color-primary-contrast);
+      color: var(--ion-color-primary);
+    }
+  }
+}
+
+.stat-card {
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  h2 {
+    font-size: 2.4rem;
+    margin: 8px 0;
+  }
+}

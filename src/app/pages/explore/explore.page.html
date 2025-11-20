@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">Explore</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding explore-page">
+
+  <!-- 🔘 Category Filter -->
+  <ion-segment
+    [(ngModel)]="segment"
+    (ionChange)="segmentChanged($event)"
+    scrollable
+    class="ion-margin-bottom"
+  >
+    <ion-segment-button value="all">
+      <ion-label>All</ion-label>
+    </ion-segment-button>
+    <ion-segment-button *ngFor="let cat of categories" [value]="cat">
+      <ion-label>{{ cat | titlecase }}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- 🌀 Loader -->
+  <ion-progress-bar *ngIf="loading" type="indeterminate"></ion-progress-bar>
+
+  <!-- 🏝️ Gallery -->
+  <div class="explore-grid" *ngIf="!loading && filtered.length > 0; else noResults">
+    <div
+      class="explore-card"
+      *ngFor="let d of filtered"
+      [class.featured]="d.featured"
+    >
+      <div class="image-wrapper">
+        <img [src]="d.imageUrl" alt="{{ d.name }}" (error)="onImageError($event)" />
+        <div class="overlay">
+          <h2>{{ d.name }}</h2>
+          <ion-badge [color]="getCategoryColor(d.category)">
+            {{ d.category | titlecase }}
+          </ion-badge>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🚫 Blank message -->
+  <ng-template #noResults>
+    <div class="ion-text-center ion-margin-top">
+      <ion-icon name="images-outline" size="large" color="medium"></ion-icon>
+      <p>No posts in this category yet.</p>
+    </div>
+  </ng-template>
+</ion-content>

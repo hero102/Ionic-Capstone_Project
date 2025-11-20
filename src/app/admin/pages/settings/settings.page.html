@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Admin Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item>
+      <ion-label>Enable Maintenance Mode</ion-label>
+      <ion-toggle [(ngModel)]="maintenance"></ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Theme</ion-label>
+      <ion-select [(ngModel)]="theme" interface="popover" (ionChange)="onThemeChange()">
+        <ion-select-option value="light">Light</ion-select-option>
+        <ion-select-option value="dark">Dark</ion-select-option>
+        <ion-select-option value="system">System</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block" (click)="saveSettings()">Save Settings</ion-button>
+</ion-content>

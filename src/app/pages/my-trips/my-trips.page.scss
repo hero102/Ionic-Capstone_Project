@@ -1,0 +1,160 @@
+/* 🌍 General Page Padding */
+ion-content {
+  --padding-top: 0.5rem;
+  --padding-bottom: 3rem;
+}
+
+/* 🔘 Segment Bar Styling */
+ion-segment {
+  background: var(--ion-color-light);
+  border-radius: 12px;
+  margin: 1rem auto;
+  max-width: 600px;
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  ion-segment-button {
+    --indicator-color: var(--ion-color-primary);
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+}
+
+/* 🧭 Responsive Grid */
+.trip-col {
+  display: flex;
+  justify-content: center;
+}
+
+/* 📸 Instagram-style Card */
+.trip-card {
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+  }
+
+  ion-card-header {
+    text-align: center;
+    padding: 0.75rem 1rem 0.5rem;
+
+    ion-card-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    ion-card-subtitle {
+      font-size: 0.9rem;
+      color: var(--ion-color-medium);
+    }
+  }
+
+  ion-card-content {
+    padding: 0.8rem 1rem 0.6rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    p {
+      margin: 0.2rem 0;
+      font-size: 0.92rem;
+      color: var(--ion-color-dark);
+      line-height: 1.3;
+    }
+
+    .date {
+      font-size: 0.85rem;
+      color: var(--ion-color-medium);
+      display: flex;
+      align-items: center;
+
+      ion-icon {
+        margin-right: 5px;
+        font-size: 1rem;
+      }
+    }
+
+    .rating-container {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 5px;
+      ion-icon {
+        font-size: 1rem;
+      }
+      ion-note {
+        font-size: 0.8rem;
+      }
+    }
+
+    .status-container {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+  }
+}
+
+/* 🖼 Image Wrapper */
+.trip-image {
+  width: 100%;
+  aspect-ratio: 1 / 1; /* ✅ Square layout, Instagram-like */
+  overflow: hidden;
+  background: #f4f4f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ion-img,
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* maintain ratio, no distortion */
+    object-position: center;
+    transition: transform 0.4s ease;
+  }
+
+  ion-img:hover {
+    transform: scale(1.05);
+  }
+}
+
+/* 🧩 Card Buttons Row */
+ion-row.ion-justify-content-around {
+  padding-bottom: 0.4rem;
+  ion-button {
+    --padding-start: 0;
+    --padding-end: 0;
+    --border-radius: 8px;
+    font-size: 0.9rem;
+  }
+}
+
+/* 🚫 Empty State */
+ion-content .ion-text-center {
+  padding-top: 2rem;
+  ion-icon {
+    font-size: 2.5rem;
+    opacity: 0.5;
+  }
+  p {
+    color: var(--ion-color-medium);
+  }
+}
+
+/* ✨ Floating Add Button */
+ion-fab-button {
+  --border-radius: 50%;
+  --box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}

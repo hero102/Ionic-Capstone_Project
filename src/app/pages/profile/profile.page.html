@@ -1,0 +1,65 @@
+<ion-header translucent>
+  <ion-toolbar color="light">
+    <ion-title class="ion-text-center">Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div class="profile-header ion-text-center">
+    <div class="profile-image-wrapper">
+      <img
+        *ngIf="profileImage; else defaultPhoto"
+        [src]="profileImage"
+        alt="Profile Photo"
+        class="profile-photo"
+      />
+      <ng-template #defaultPhoto>
+        <ion-icon name="person-circle-outline" size="large" color="medium"></ion-icon>
+      </ng-template>
+
+      <!-- ✅ Opens ActionSheet with Camera / File options -->
+      <ion-fab-button
+        size="small"
+        color="primary"
+        class="camera-btn"
+        (click)="openPhotoOptions()"
+      >
+        <ion-icon name="camera-outline"></ion-icon>
+      </ion-fab-button>
+    </div>
+
+    <h2>{{ profileForm.value.name || 'Your Name' }}</h2>
+    <p class="location">
+      <ion-icon name="location-outline"></ion-icon>
+      {{ profileForm.value.location || 'Fetching location...' }}
+    </p>
+  </div>
+
+  <ion-card class="profile-card">
+    <ion-card-content>
+      <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+        <ion-item lines="inset">
+          <ion-label position="stacked">Name</ion-label>
+          <ion-input formControlName="name" placeholder="Your name"></ion-input>
+        </ion-item>
+
+        <ion-item lines="inset">
+          <ion-label position="stacked">Location</ion-label>
+          <ion-input formControlName="location" placeholder="Your location"></ion-input>
+          <ion-button fill="clear" size="small" (click)="getLocation()">
+            <ion-icon slot="start" name="locate-outline"></ion-icon> Fetch
+          </ion-button>
+        </ion-item>
+
+        <ion-button expand="block" type="submit" color="primary" class="ion-margin-top">
+          Save Changes
+        </ion-button>
+      </form>
+
+      <ion-button expand="block" color="medium" (click)="logout()">
+        Logout
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

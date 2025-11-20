@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Admin Dashboard</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="start" name="log-out-outline"></ion-icon>
+        Logout
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-spinner *ngIf="loading()" name="crescent" class="ion-text-center"></ion-spinner>
+
+  <ion-grid *ngIf="!loading()">
+    <!-- 📦 Stats Cards -->
+    <ion-row>
+      <ion-col size="12" size-md="6" size-lg="3">
+        <ion-card color="light">
+          <ion-card-header><ion-card-title>Total Trips</ion-card-title></ion-card-header>
+          <ion-card-content><h2>{{ totalTrips() }}</h2></ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-md="6" size-lg="3">
+        <ion-card color="success">
+          <ion-card-header><ion-card-title>Approved Trips</ion-card-title></ion-card-header>
+          <ion-card-content><h2>{{ approvedTrips() }}</h2></ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-md="6" size-lg="3">
+        <ion-card color="warning">
+          <ion-card-header><ion-card-title>Featured Trips</ion-card-title></ion-card-header>
+          <ion-card-content><h2>{{ featuredTrips() }}</h2></ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-md="6" size-lg="3">
+        <ion-card color="tertiary">
+          <ion-card-header><ion-card-title>Pending Trips</ion-card-title></ion-card-header>
+          <ion-card-content><h2>{{ pendingTrips() }}</h2></ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-md="6" size-lg="3">
+        <ion-card color="medium">
+          <ion-card-header><ion-card-title>Total Destinations</ion-card-title></ion-card-header>
+          <ion-card-content><h2>{{ destinationsCount() }}</h2></ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- 📊 Charts Section -->
+    <ion-row>
+      <ion-col size="12" size-md="6">
+        <ion-card>
+          <ion-card-header><ion-card-title>Trips per Destination</ion-card-title></ion-card-header>
+          <ion-card-content><canvas #barCanvas></canvas></ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-md="6">
+        <ion-card>
+          <ion-card-header><ion-card-title>Trips Status Overview</ion-card-title></ion-card-header>
+          <ion-card-content><canvas #pieCanvas></canvas></ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- 🏆 Top Destinations -->
+    <ion-card>
+      <ion-card-header><ion-card-title>Top Destinations</ion-card-title></ion-card-header>
+      <ion-card-content>
+        <ion-list *ngIf="topDestinations().length > 0; else noData">
+          <ion-item *ngFor="let d of topDestinations()">
+            <ion-label>
+              <h2>{{ d.name }}</h2>
+              <p>Total Trips: {{ d.tripCount }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <ng-template #noData>
+          <ion-text color="medium">
+            <p class="ion-text-center">No destination data available</p>
+          </ion-text>
+        </ng-template>
+      </ion-card-content>
+    </ion-card>
+  </ion-grid>
+</ion-content>

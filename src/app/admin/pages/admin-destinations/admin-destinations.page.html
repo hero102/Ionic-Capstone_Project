@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Manage Categories</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="addCategory()">
+        <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+        Add
+      </ion-button>
+      <ion-button (click)="loadCategories()">
+        <ion-icon name="refresh-outline" slot="start"></ion-icon>
+        Reload
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-searchbar [(ngModel)]="search" placeholder="Search categories"></ion-searchbar>
+
+  <ion-list *ngIf="filteredCategories().length > 0; else noData">
+    <ion-item *ngFor="let cat of filteredCategories()">
+      <ion-label>{{ cat.category | titlecase }}</ion-label>
+
+      <ion-button fill="clear" color="medium" (click)="editCategory(cat)">
+        <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" color="danger" (click)="deleteCategory(cat)">
+        <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ng-template #noData>
+    <ion-text color="medium">
+      <p class="ion-text-center ion-margin-top">No categories found.</p>
+    </ion-text>
+  </ng-template>
+
+  <ion-progress-bar *ngIf="loading()" type="indeterminate"></ion-progress-bar>
+</ion-content>
